@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <EditText
+        android:id="@+id/tx_cpte_bank_por"
+        android:hint="@string/hint_text_old_pin_fr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="2dp"
+        android:paddingLeft="2dp"
+        />
+    <EditText
+        android:id="@+id/tx_old_pin_por"
+        android:hint="@string/hint_text_old_pin_por"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="2dp"
+        android:paddingLeft="2dp"
+        />
+
+    <EditText
+        android:id="@+id/tx_new_pin_por"
+        android:paddingRight="2dp"
+        android:paddingLeft="2dp"
+        android:hint="@string/hint_text_new_pin_por"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>

@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Setram</string>
+    <string name="message_pin_fr">Saisissez votre nouveau Pin</string>
+    <string name="message_pin_por">Insera seu novo código</string>
+    <string name="btn_postive_fr">VALIDER</string>
+    <string name="hint_text_old_pin_fr">Entrez votre ancien pin</string>
+    <string name="hint_text_new_pin_fr">Entrez votre nouveau pin</string>
+    <string name="hint_text_old_pin_en">Enter old pin</string>
+    <string name="hint_text_new_pin_en">Enter new pin</string>
+    <string name="hint_text_old_pin_por">Insera seu antigo código</string>
+    <string name="hint_text_new_pin_por">Insera seu novo código</string>
+    <string name="message_choice">Liste des langues / List languages</string>
+    <dimen name="flags">10dp</dimen>
+    <string name="title_activity_list_languages">Selectionnez la langue</string>
+    <string name="title_activity_dashboard">Setram</string>
+    <string name="title_activity_new_transact">Creer transaction</string>
+    <string name="title_progress_auth_fr">Authentification</string>
+    <string name="title_progress_auth_por">Authenticação</string>
+    <string name="title_progress_auth_msg_fr">Initialisation du compte</string>
+    <string name="title_progress_auth_msg_por">Inicialização da conta</string>
+    <string name="title_compte_bank_fr">Saisissez votre compte bancaire</string>
+    <string name="title_compte_bank_por">Insira sua conta bancária</string>
+    <string name="transact_out_label_fr">Envoyé :</string>
+    <string name="title_info_transact">TRANSACTION EFFECTUÉE</string>
+    <string name="header_list_fr">Mes comptes</string>
+    <string name="btn_create_account">AJOUTER UN COMPTE</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="lstTransacts">Journal transactions</string>
+    <string name="lstagencies">Les agences</string>
+    <string name="lsttarifs">Coûts transferts</string>
+    <string name="lstparam">Paramétrage</string>
+    <string name="title_activity_tab_transact">TabTransact</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_main_dash">MainDash</string>
+    <string name="action_settings">Actualiser</string>
+    <string name="action_settings_add">Envoyer argent</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main4">Main4Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="labelNotThing_fr">Liste vide</string>
+    <string name="labelNotThing_por">Lista vazia</string>
+    <string-array name="item_langs">
+    <item>Select langue</item>
+    <item>Français</item>
+    <item>Portugais</item>
+</string-array>
+    <string name="btn_add_account_por">ADICIONE UMA CONTA</string>
+    <string name="header_list_por">Minhas contas</string>
+</resources>

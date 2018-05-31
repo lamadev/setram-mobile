@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_layout">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:paddingBottom="3dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/size_label"
+                android:text="Nom beneficiaire"/>
+
+            <TextView
+                android:id="@+id/lbl_name_benef"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_label_16"
+                android:text="Nom beneficiaire"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:paddingBottom="3dp"
+                android:textColor="@android:color/black"
+                android:paddingTop="3dp"
+                android:textSize="@dimen/size_label"
+                android:text="Date transfert"/>
+
+            <TextView
+                android:id="@+id/lbl_date_transfer"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:textColor="@android:color/black"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_label_16"
+                android:text="12-02-2017 12:45:20"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:paddingBottom="3dp"
+                android:textColor="@android:color/black"
+                android:paddingTop="3dp"
+                android:textSize="@dimen/size_label"
+                android:text="Montant transféré"/>
+
+            <TextView
+                android:id="@+id/lbl_amount_transfer"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_label_16"
+                android:text="50 USD"/>
+
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

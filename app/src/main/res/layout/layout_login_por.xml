@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    tools:context="betsaleel.setram.com.setrambank.AccountListActivity"
+    tools:showIn="@layout/activity_account_list">
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/tx_cpte_bank_por"
+            android:hint="@string/title_compte_bank_por"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="2dp"
+            android:paddingLeft="2dp"
+            android:imeActionId="6"
+            android:imeActionLabel="conta bancária"
+            android:imeOptions="actionUnspecified"
+            android:inputType="number"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/tx_old_pin_por"
+            android:hint="@string/hint_text_old_pin_por"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="2dp"
+            android:paddingLeft="2dp"
+            android:imeActionId="6"
+            android:imeActionLabel="antigo código"
+            android:imeOptions="actionUnspecified"
+            android:inputType="number"
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:paddingRight="2dp"
+            android:paddingLeft="2dp"
+            android:id="@+id/tx_new_pin_por"
+            android:hint="@string/hint_text_new_pin_por"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeActionId="6"
+            android:imeActionLabel="novo código"
+            android:imeOptions="actionUnspecified"
+            android:inputType="number"
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+</LinearLayout>
