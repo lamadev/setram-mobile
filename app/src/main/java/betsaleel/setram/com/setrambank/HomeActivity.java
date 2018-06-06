@@ -132,7 +132,8 @@ public class HomeActivity extends AppCompatActivity {
                 //httpCnx.connect();
                 InputStream is=httpCnx.getInputStream();
                 BufferedReader reader=new BufferedReader(new InputStreamReader(is));
-                while((line=reader.readLine())!=""){
+                response="";
+                while((line=reader.readLine())!=null){
                     response+=reader.readLine();
                 }
                 httpCnx.disconnect();
@@ -152,7 +153,8 @@ public class HomeActivity extends AppCompatActivity {
         protected void onPostExecute(View view){
             if (progressDialog.isShowing()){
                 progressDialog.dismiss();
-                Toast.makeText(_ctx, "Response:"+response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(_ctx, "ANSWER:"+response, Toast.LENGTH_SHORT).show();
+
                 try {
 
                     JSONObject object=new JSONObject(response);
@@ -169,9 +171,10 @@ public class HomeActivity extends AppCompatActivity {
                     Toast.makeText(_ctx, "JSON Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
                     // e.printStackTrace();
                 }catch(Exception e){
-                    // Toast.makeText(_ctx, "Other Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(_ctx, "Other Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
+
 
             }
         }
@@ -249,7 +252,7 @@ public class HomeActivity extends AppCompatActivity {
         protected void onPostExecute(View view){
             if (progressDialog.isShowing()){
                 progressDialog.dismiss();
-                 Toast.makeText(_ctx, "Response:"+response, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(_ctx, "Response:"+response, Toast.LENGTH_SHORT).show();
                 try {
 
                     JSONObject object=new JSONObject(response);
