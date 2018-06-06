@@ -153,7 +153,7 @@ public class HomeActivity extends AppCompatActivity {
         protected void onPostExecute(View view){
             if (progressDialog.isShowing()){
                 progressDialog.dismiss();
-                Toast.makeText(_ctx, "ANSWER:"+response, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(_ctx, "ANSWER:"+response, Toast.LENGTH_SHORT).show();
 
                 try {
 
@@ -292,6 +292,34 @@ public class HomeActivity extends AppCompatActivity {
 
         return true;
     }
+    private void RefreshAccount(String url){
+        new QueryPinAuth(url, HomeActivity.this, "Actualiser", new AsyncCallback() {
+            @Override
+            public void queryResult(Object result) {
+                try{
+                    if (result instanceof JSONObject){
+
+                        AccountInfo.AccountNum=((JSONObject)result).getJSONObject("data").getString("accountNum");
+                        AccountInfo.pin=((JSONObject)result).getJSONObject("data").getString("pin");
+                        AccountInfo.idAccount=((JSONObject)result).getJSONObject("data").getString("IdCompte");
+                        HomeActivity.jsonObject=(JSONObject) result;
+                        AdapterDB adb=new AdapterDB(getApplicationContext());
+                        adb.OpenDB();
+                        adb.UpdateLogs(result.toString(),AccountInfo.idAccount);
+                        getTransact();
+                        //Toast.makeText(AccountListActivity.this,result.toString(),Toast.LENGTH_LONG).show();
+                        // Intent iDash=new Intent(AccountListActivity.this,HomeActivity.class);
+                        //startActivity(iDash);
+                    }else{
+                        //Toast.makeText(AccountListActivity.this,"Authentfication réjetée",Toast.LENGTH_LONG)
+                        //      .show();
+                    }
+                }catch(Exception ex){
+
+                }
+            }
+        }).execute();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -403,8 +431,9 @@ public class HomeActivity extends AppCompatActivity {
                                                         try{
                                                             String id=HomeActivity.jsonObject.getJSONObject("data").getString("IdCompte");
                                                             db.UpdateLogs(HomeActivity.jsonObject.toString(),id);
-                                                            HomeActivity.jsonObject=new JSONObject(db.getLogs(db.getCurrentUser()));
-                                                            Toast.makeText(HomeActivity.this, HomeActivity.jsonObject.toString(), Toast.LENGTH_LONG).show();
+                                                            getTransact();
+                                                            //HomeActivity.jsonObject=new JSONObject(db.getLogs(db.getCurrentUser()));
+                                                           Toast.makeText(HomeActivity.this, HomeActivity.jsonObject.toString(), Toast.LENGTH_LONG).show();
 
                                                         }catch(Exception e){
 
