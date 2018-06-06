@@ -80,6 +80,103 @@ public class HomeActivity extends AppCompatActivity {
         }
         return "";
     }
+    class QueryAddTransaction extends AsyncTask<Void, Void, View> {
+        private Context _ctx;
+        private String _url,response;
+        private ProgressDialog progressDialog;
+        private URL uri;
+        private HttpURLConnection httpCnx;
+        private URLConnection urlConnection=null;
+        private AsyncCallback delegate=null;
+        private String hd;
+        public QueryAddTransaction(String url,Context ctx,String header, AsyncCallback callback){
+            this._url=url;
+            this._ctx=ctx;
+            this.delegate=callback;
+            this.hd=header;
+        }
+        @Override
+        protected void onPreExecute(){
+            progressDialog=new ProgressDialog(_ctx);
+
+            if(this.hd.equals("Transaction")){
+                progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Transação":this.hd);
+                progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Transação em andamento":"Transaction en cours");
+            }
+            if (this.hd.equals("Actualiser")){
+                progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Atualize":this.hd);
+                progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Atualize a lista de transações":"Actualiser la liste des transactions");
+            }
+            if(this.hd.equals("Sécurité")){
+                progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Segurança":this.hd);
+                progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Atualização em andamento":"Mise à jour en cours....");
+            }
+            if (this.hd.equals("solde")){
+                progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Saldo de carregamento":"Chargement solde");
+                progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Carregando":"Chargement en cours");
+            }
+
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+        @Override
+        protected View doInBackground(Void... voids) {
+
+            try {
+                String line="";
+                uri=new URL(this._url);
+                urlConnection=uri.openConnection();
+                httpCnx=(HttpURLConnection)urlConnection;
+                httpCnx.setRequestMethod("GET");
+                httpCnx.setDoInput(true);
+                //httpCnx.connect();
+                InputStream is=httpCnx.getInputStream();
+                BufferedReader reader=new BufferedReader(new InputStreamReader(is));
+                while((line=reader.readLine())!=""){
+                    response+=reader.readLine();
+                }
+                httpCnx.disconnect();
+
+            } catch (MalformedURLException e) {
+                Toast.makeText(_ctx,"Http ULR:"+e.getMessage(),Toast.LENGTH_LONG).show();
+
+            } catch (IOException e) {
+                Toast.makeText(_ctx,e.getMessage(),Toast.LENGTH_LONG).show();
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(View view){
+            if (progressDialog.isShowing()){
+                progressDialog.dismiss();
+                Toast.makeText(_ctx, "Response:"+response, Toast.LENGTH_SHORT).show();
+                try {
+
+                    JSONObject object=new JSONObject(response);
+                    HomeActivity.jsonObject=object;
+                    //Toast.makeText(_ctx, "JSON Datas:"+HomeActivity.jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                    int status=object.getJSONObject("response").getInt("status");
+                    //Toast.makeText(_ctx,"Status :"+Integer.toString(status),Toast.LENGTH_LONG).show();
+                    if (status!=200){
+                        delegate.queryResult(false);
+                    }else{
+                        delegate.queryResult(object);
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(_ctx, "JSON Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    // e.printStackTrace();
+                }catch(Exception e){
+                    // Toast.makeText(_ctx, "Other Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        }
+    }
+
     class QueryPinAuth extends AsyncTask<Void, Void, View> {
         private Context _ctx;
         private String _url,response;
@@ -110,6 +207,10 @@ public class HomeActivity extends AppCompatActivity {
             if(this.hd.equals("Sécurité")){
                 progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Segurança":this.hd);
                 progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Atualização em andamento":"Mise à jour en cours....");
+            }
+            if (this.hd.equals("solde")){
+                progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Saldo de carregamento":"Chargement solde");
+                progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Carregando":"Chargement en cours");
             }
 
             progressDialog.setCancelable(false);
@@ -148,7 +249,7 @@ public class HomeActivity extends AppCompatActivity {
         protected void onPostExecute(View view){
             if (progressDialog.isShowing()){
                 progressDialog.dismiss();
-                 //Toast.makeText(_ctx, "Response:"+response, Toast.LENGTH_SHORT).show();
+                 Toast.makeText(_ctx, "Response:"+response, Toast.LENGTH_SHORT).show();
                 try {
 
                     JSONObject object=new JSONObject(response);
@@ -165,7 +266,7 @@ public class HomeActivity extends AppCompatActivity {
                     Toast.makeText(_ctx, "JSON Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
                     // e.printStackTrace();
                 }catch(Exception e){
-                    Toast.makeText(_ctx, "Other Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(_ctx, "Other Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -287,16 +388,28 @@ public class HomeActivity extends AppCompatActivity {
                                             if (amountClient<0 ){
                                                 String message=AccountListActivity.ActualLang.equals("fr")?"Les valeurs négatives ne sont pas permises":"Valores negativos não são permitidos";
                                             }
-                                            new QueryPinAuth(http_url, HomeActivity.this,"Transaction", new AsyncCallback() {
+                                            new QueryAddTransaction(http_url, HomeActivity.this,"Transaction", new AsyncCallback() {
                                                 @Override
                                                 public void queryResult(Object result) {
                                                     if (result instanceof JSONObject){
-                                                        dashboard.jsonObject=null;
-                                                        dashboard.jsonObject=(JSONObject)result;
+
+                                                        HomeActivity.jsonObject=(JSONObject)result;
+                                                        AdapterDB db=new AdapterDB(HomeActivity.this);
+                                                        db.OpenDB();
+
+                                                        try{
+                                                            String id=HomeActivity.jsonObject.getJSONObject("data").getString("IdCompte");
+                                                            db.UpdateLogs(HomeActivity.jsonObject.toString(),id);
+                                                            HomeActivity.jsonObject=new JSONObject(db.getLogs(db.getCurrentUser()));
+                                                            Toast.makeText(HomeActivity.this, HomeActivity.jsonObject.toString(), Toast.LENGTH_LONG).show();
+
+                                                        }catch(Exception e){
+
+                                                        }
                                                         //JSONObject test=(JSONObject)result;
-                                                        //oast.makeText(dashboard.this, "Response:"+((JSONObject)result).toString(), Toast.LENGTH_SHORT).show();
+                                                       // Toast.makeText(HomeActivity.this, "Response:"+.toString(), Toast.LENGTH_SHORT).show();
                                                         Snackbar.make(HomeActivity.this.getCurrentFocus(),AccountListActivity.ActualLang.equals("fr")?"Transaction effectuée avec succes":"Transação concluída com sucesso",Snackbar.LENGTH_LONG).show();
-                                                        getTransact();
+                                                       // getTransact();
 
                                                     }
                                                 }
@@ -351,6 +464,7 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setElevation(0);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        //toolbar.setNavigationIcon(R.drawable.iconnav);
         AdapterDB db=new AdapterDB(getApplicationContext());
         db.OpenDB();
         try {
@@ -403,22 +517,39 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 try{
-                    String solde=jsonObject.getJSONObject("data").getString("balance")+" "+jsonObject.getJSONObject("data").getString("codeCurrency").toUpperCase();
                     if (i==2){
-                        AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
-                        builder.setMessage(AccountListActivity.ActualLang.equals("por")?"Seu saldo bancário é : "+solde+"":"Votre solde est de : "+solde+"");
-                        builder.setTitle(AccountListActivity.ActualLang.equals("por")?"SEU BALANÇO DO BANCO":"VOTRE SOLDE");
-                        builder.setCancelable(true);
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        String id=HomeActivity.jsonObject.getJSONObject("data").getString("IdCompte");
+                        String pin=HomeActivity.jsonObject.getJSONObject("data").getString("pin");
+                        String urlServer="http://www.agriprombtc.com/svptest/codes/serveur/api/loginController.php?idcompte="+id+"&pin="+pin;
+                      //  Toast.makeText(HomeActivity.this, urlServer, Toast.LENGTH_LONG).show();
+                         new QueryPinAuth(urlServer, HomeActivity.this, "solde", new AsyncCallback() {
                             @Override
+                            public void queryResult(Object result) {
+                                HomeActivity.jsonObject=(JSONObject)result;
+                                getTransact();
+                                String solde= null;
+                                try {
+                                    solde = HomeActivity.jsonObject.getJSONObject("data").getString("balance")+" "+jsonObject.getJSONObject("data").getString("codeCurrency").toUpperCase();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
+                                builder.setMessage(AccountListActivity.ActualLang.equals("por")?"Seu saldo bancário é : "+solde+"":"Votre solde est de : "+solde+"");
+                                builder.setTitle(AccountListActivity.ActualLang.equals("por")?"SEU BALANÇO DO BANCO":"VOTRE SOLDE");
+                                builder.setCancelable(true);
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
 
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                                    public void onClick(DialogInterface dialogInterface, int i) {
 
 
+                                    }
+                                });
+                                AlertDialog dialog=builder.create();
+                                dialog.show();
                             }
-                        });
-                        AlertDialog dialog=builder.create();
-                        dialog.show();
+                        }).execute();
+
                     }else if(i==0){
                         final LayoutInflater layout_inflater=LayoutInflater.from(HomeActivity.this);
                         final View layout_view=layout_inflater.inflate(R.layout.layout_change_pin,null);
@@ -834,8 +965,9 @@ public class HomeActivity extends AppCompatActivity {
             for (int i=0;i<tabTarif.length();i++){
                 JSONObject object_tarif=tabTarif.getJSONObject(i);
                 String borne="De "+object_tarif.getString("BorneInf")+" à "+object_tarif.getString("BornSuper")+
-                        " "+object_tarif.getString("Libmonnaie");
-                String gain=object_tarif.getString("TypePlage")+":"+object_tarif.getString("MontantPlage");
+                        " "+object_tarif.getString("CodeMonnaie");
+                String typePlage=object_tarif.getString("TypePlage").toUpperCase().equals("F")?"Forfait":"Pourcentage";
+                String gain=typePlage+":"+object_tarif.getString("MontantPlage");
                 element = new HashMap<String, String>();
                 element.put("text1", borne);
                 element.put("text2", gain);

@@ -109,6 +109,8 @@ public class AdapterDB {
         dbClient.update("t_account",cv,"pin="+oldpin,null);
         return true;
     }
+
+
     public boolean UpdateCurrentUser(String newid){
         ContentValues cv = new ContentValues();
         cv.put("idaccount",newid);

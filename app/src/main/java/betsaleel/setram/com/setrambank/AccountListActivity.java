@@ -401,6 +401,9 @@ public class AccountListActivity extends AppCompatActivity {
                                                 AccountInfo.idAccount=((JSONObject)result).getJSONObject("data").getString("IdCompte");
                                                 HomeActivity.jsonObject=(JSONObject) result;
                                                 ActualLang=mapper.get("lang").toString();
+                                                AdapterDB db=new AdapterDB(AccountListActivity.this);
+                                                db.OpenDB();
+                                                db.UpdateLogs(HomeActivity.jsonObject.toString(),idCompte);
                                                 //Toast.makeText(AccountListActivity.this,result.toString(),Toast.LENGTH_LONG).show();
                                                 Intent iDash=new Intent(AccountListActivity.this,HomeActivity.class);
                                                 startActivity(iDash);

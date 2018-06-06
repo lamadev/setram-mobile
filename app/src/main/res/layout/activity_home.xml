@@ -20,8 +20,7 @@
             android:background="@color/colorBase"
             app:theme="@style/AppTheme.Toolbar"
             app:titleTextAppearance="@style/AppTheme.Toolbar.Title"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
+
             />
 
     </android.support.design.widget.AppBarLayout>
