@@ -407,7 +407,8 @@ public class HomeActivity extends AppCompatActivity {
 
                             if (AccountInfo.pin.equals(pinSender.trim())){
                                 if (Double.parseDouble(Amount)<amountClient  ){
-                                    String http_url="http://www.agriprombtc.com/svptest/codes/serveur/ServeurTransfert_Mobile.php?IdCompteE="+idAccount+"&IdCompteB="+NumAccountReceiver+"&MontantTransfert="+Amount+"&CodeMonnaietrans="+devise+"&Moyen=MOBILE&idagent=0&IdAgence=0&PIN="+AccountInfo.pin;
+                                   // String http_url="http://www.agriprombtc.com/svptest/codes/serveur/ServeurTransfert_Mobile.php?IdCompteE="+idAccount+"&IdCompteB="+NumAccountReceiver+"&MontantTransfert="+Amount+"&CodeMonnaietrans="+devise+"&Moyen=MOBILE&idagent=0&IdAgence=0&PIN="+AccountInfo.pin;
+                                    String http_url="https://setramvip.com/codes/serveur/ServeurTransfert_Mobile.php?IdCompteE="+idAccount+"&IdCompteB="+NumAccountReceiver+"&MontantTransfert="+Amount+"&CodeMonnaietrans="+devise+"&Moyen=MOBILE&idagent=0&IdAgence=0&PIN="+AccountInfo.pin+"&CodeTypeCompte=Standard";
                                    // Toast.makeText(HomeActivity.this, "URL:"+http_url, Toast.LENGTH_SHORT).show();
                                     configuration=new Configuration();
                                     boolean isConnected=configuration.statusConnectivity(getApplicationContext());
@@ -552,7 +553,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (i==2){
                         String id=HomeActivity.jsonObject.getJSONObject("data").getString("IdCompte");
                         String pin=HomeActivity.jsonObject.getJSONObject("data").getString("pin");
-                        String urlServer="http://www.agriprombtc.com/svptest/codes/serveur/api/loginController.php?idcompte="+id+"&pin="+pin;
+                        String urlServer="https://setramvip.com/codes/serveur/api/loginController.php?idcompte="+id+"&pin="+pin;
                       //  Toast.makeText(HomeActivity.this, urlServer, Toast.LENGTH_LONG).show();
                          new QueryPinAuth(urlServer, HomeActivity.this, "solde", new AsyncCallback() {
                             @Override
@@ -604,7 +605,7 @@ public class HomeActivity extends AppCompatActivity {
                                 if (old_pin.getText().toString().equals(AccountInfo.pin)){
                                     //Toast.makeText(HomeActivity.this, "OK", Toast.LENGTH_SHORT).show();
                                     //String http_url="http://"+ networker.ipServer+"setram_vip/codes/serveur/api/pinController.php?account="+ AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
-                                    String http_url="http://www.agriprombtc.com/svptest/codes/serveur/api/pinController.php?account="+AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
+                                    String http_url="https://setramvip.com/codes/serveur/api/pinController.php?account="+AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
                                     //Toast.makeText(HomeActivity.this, "URL:"+http_url, Toast.LENGTH_LONG).show();
 
                                   HomeActivity.QueryPinAuth queryPinAuth=new HomeActivity.QueryPinAuth(http_url, HomeActivity.this,"Sécurité", new AsyncCallback() {
