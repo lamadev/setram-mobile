@@ -8,6 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="538972fb-8281-48d6-99ae-2e719d73b445" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/betsaleel/setram/com/setrambank/HomeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/betsaleel/setram/com/setrambank/HomeActivity.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -34,8 +35,8 @@
       <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/betsaleel/setram/com/setrambank/HomeActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="410" column="43" lean-forward="false" selection-start-line="410" selection-start-column="43" selection-end-line="410" selection-end-column="43" />
+            <state relative-caret-position="17">
+              <caret line="405" column="82" lean-forward="false" selection-start-line="405" selection-start-column="82" selection-end-line="405" selection-end-column="82" />
               <folding>
                 <element signature="method#QueryPinAuth#0;class#QueryPinAuth#0;class#HomeActivity#0" expanded="false" />
                 <element signature="method#getListAgency#0;class#HomeActivity#0" expanded="false" />
@@ -2079,7 +2080,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1531293413980" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1531293499628" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2127,7 +2128,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1531293413980" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1531293499628" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2289,7 +2290,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1531293413983" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1531293499631" />
       </method>
     </configuration>
     <list size="1">
@@ -2349,7 +2350,14 @@
       <option name="project" value="LOCAL" />
       <updated>1531293266659</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Changer les URLS des APIs">
+      <created>1531293423718</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1531293423718</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2895,8 +2903,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/betsaleel/setram/com/setrambank/HomeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="410" column="43" lean-forward="false" selection-start-line="410" selection-start-column="43" selection-end-line="410" selection-end-column="43" />
+        <state relative-caret-position="17">
+          <caret line="405" column="82" lean-forward="false" selection-start-line="405" selection-start-column="82" selection-end-line="405" selection-end-column="82" />
           <folding>
             <element signature="method#QueryPinAuth#0;class#QueryPinAuth#0;class#HomeActivity#0" expanded="false" />
             <element signature="method#getListAgency#0;class#HomeActivity#0" expanded="false" />

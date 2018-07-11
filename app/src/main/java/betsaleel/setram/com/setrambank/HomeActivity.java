@@ -404,7 +404,6 @@ public class HomeActivity extends AppCompatActivity {
                         final String Amount=((EditText)layout_view.findViewById(R.id.txAmount)).getText().toString();
 
                         if (!NumAccountReceiver.equals("") && !Amount.equals("")){
-
                             if (AccountInfo.pin.equals(pinSender.trim())){
                                 if (Double.parseDouble(Amount)<amountClient  ){
                                    // String http_url="http://www.agriprombtc.com/svptest/codes/serveur/ServeurTransfert_Mobile.php?IdCompteE="+idAccount+"&IdCompteB="+NumAccountReceiver+"&MontantTransfert="+Amount+"&CodeMonnaietrans="+devise+"&Moyen=MOBILE&idagent=0&IdAgence=0&PIN="+AccountInfo.pin;
