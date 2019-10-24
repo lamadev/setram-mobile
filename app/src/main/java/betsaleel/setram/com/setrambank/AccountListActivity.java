@@ -386,7 +386,7 @@ public class AccountListActivity extends AppCompatActivity {
                             final EditText editPin=(EditText)layout_view.findViewById(R.id.pin_login);
 
 
-                            final String url="https://setramvip.com/codes/serveur/api/loginController.php?idcompte="+idCompte+"&pin="+editPin.getText().toString().trim();
+                            final String url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/loginController.php?idcompte="+idCompte+"&pin="+editPin.getText().toString().trim();
                             //Toast.makeText(AccountListActivity.this,"RESPONSE:"+url,Toast.LENGTH_LONG).show();
                             Configuration configuration=new Configuration();
                             boolean isConnected=configuration.statusConnectivity(getApplicationContext());
@@ -461,7 +461,7 @@ public class AccountListActivity extends AppCompatActivity {
                         builder.setPositiveButton(ActualLang.equals("fr")?"CONNEXION":"CONEXÃO", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                final String url="https://setramvip.com/codes/serveur/api/loginController.php?numcompte="+accountAddList.getText().toString().trim()+"&pin="+pinAddList.getText().toString().trim();
+                                final String url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/loginController.php?numcompte="+accountAddList.getText().toString().trim()+"&pin="+pinAddList.getText().toString().trim();
                                 //Toast.makeText(MainActivity.this,"RESPONSE:"+url,Toast.LENGTH_LONG).show();
 
                                 new QueryPinAuth(url, AccountListActivity.this, new AsyncCallback() {
@@ -518,7 +518,7 @@ public class AccountListActivity extends AppCompatActivity {
                         //Toast.makeText(AccountListActivity.this, "Create!!", Toast.LENGTH_SHORT).show();
 
 
-                        String url="https://setramvip.com/codes/serveur/api/pinController.php?account="+account.getText().toString()+"&old="+oldPin.getText().toString()+"&new="+newPin.getText().toString();
+                        String url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/pinController.php?account="+account.getText().toString()+"&old="+oldPin.getText().toString()+"&new="+newPin.getText().toString();
                         new QueryPinAuth(url, AccountListActivity.this, new AsyncCallback() {
                             @Override
                             public void queryResult(Object result) {

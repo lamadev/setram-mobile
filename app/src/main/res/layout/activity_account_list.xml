@@ -70,6 +70,7 @@
         android:textColor="@color/colorBase"
         android:textSize="14dp"
         android:background="@drawable/button_style"
+        android:layout_marginTop="-20sp"
         android:id="@+id/btn_add_account"
         />
 </RelativeLayout>

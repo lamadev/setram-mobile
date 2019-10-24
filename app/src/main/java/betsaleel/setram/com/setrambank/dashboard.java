@@ -256,7 +256,7 @@ public class dashboard extends AppCompatActivity {
                                 EditText new_pin=(EditText)layout_view.findViewById(R.id.tx_nwe_pin_change);
                                 if (old_pin.getText().toString().equals(AccountInfo.pin)){
                                     Toast.makeText(dashboard.this, "OK", Toast.LENGTH_SHORT).show();
-                                    String http_url="http://"+networker.ipServer+"/setram_vip/codes/serveur/api/pinlog/"+ AccountInfo.AccountNum+"/"+old_pin.getText().toString()+"/"+new_pin.getText().toString()+"";
+                                    String http_url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/pinController.php?account="+ AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
                                     Toast.makeText(dashboard.this, "URL:"+http_url, Toast.LENGTH_SHORT).show();
 
                                     QueryPinAuth queryPinAuth=new QueryPinAuth(http_url, dashboard.this,"Securité", new AsyncCallback() {
@@ -405,7 +405,7 @@ public class dashboard extends AppCompatActivity {
 
                                if (AccountInfo.pin.equals(pinSender.trim())){
                                   if (Double.parseDouble(Amount)<amountClient){
-                                      String http_url="http://www.agriprombtc.com/svptest/codes/serveur/ServeurTransfert_Mobile.php?IdCompteE="+idAccount+"&IdCompteB="+NumAccountReceiver+"&MontantTransfert="+Amount+"&CodeMonnaietrans="+devise+"&Moyen=MOBILE&idagent=0&IdAgence=0&PIN="+AccountInfo.pin;
+                                      String http_url="http://www.betsaleeltech.com/setramvip/codes/serveur/ServeurTransfert_Mobile.php?IdCompteE="+idAccount+"&IdCompteB="+NumAccountReceiver+"&MontantTransfert="+Amount+"&CodeMonnaietrans="+devise+"&Moyen=MOBILE&idagent=0&IdAgence=0&PIN="+AccountInfo.pin;
                                       Toast.makeText(dashboard.this, "URL:"+http_url, Toast.LENGTH_SHORT).show();
 
                                       new QueryPinAuth(http_url, dashboard.this,"Transaction", new AsyncCallback() {

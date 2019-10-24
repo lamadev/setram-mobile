@@ -5,6 +5,6 @@ package betsaleel.setram.com.setrambank.pojos;
  */
 
 public class networker {
-    public static String ipServer ="https://setramvip.com/";
+    public static String ipServer ="betsaleeltech.com";
     public static  String changePin="http://"+ipServer+"/codes/serveur/api/pinlog/";
 }
