@@ -256,7 +256,13 @@ public class dashboard extends AppCompatActivity {
                                 EditText new_pin=(EditText)layout_view.findViewById(R.id.tx_nwe_pin_change);
                                 if (old_pin.getText().toString().equals(AccountInfo.pin)){
                                     Toast.makeText(dashboard.this, "OK", Toast.LENGTH_SHORT).show();
-                                    String http_url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/pinController.php?account="+ AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
+                                    //String http_url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/pinController.php?account="+ AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
+                                    String http_url=networker.getUpdateLoginUrlFormatted
+                                            (
+                                                    AccountInfo.AccountNum,
+                                                    old_pin.getText().toString(),
+                                                    new_pin.getText().toString()
+                                            );
                                     Toast.makeText(dashboard.this, "URL:"+http_url, Toast.LENGTH_SHORT).show();
 
                                     QueryPinAuth queryPinAuth=new QueryPinAuth(http_url, dashboard.this,"Securité", new AsyncCallback() {

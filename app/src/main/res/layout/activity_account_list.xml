@@ -7,12 +7,13 @@
     tools:context="betsaleel.setram.com.setrambank.AccountListActivity"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
-    android:paddingTop="5dp">
+    android:paddingTop="5dp"
+    style="@style/ListFont">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:textSize="60dp"
         android:text="Setram"
         android:gravity="right"
         android:textColor="@color/colorBase"
@@ -32,13 +33,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24dp"
+            android:textSize="40dp"
             android:text="@string/header_list_fr"
             android:textColor="@android:color/black"
             android:id="@+id/header"
-            android:paddingBottom="5dp"
+            android:paddingBottom="5sp"
             />
         <ListView
+            android:paddingTop="20sp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/listView_account"
@@ -53,9 +55,12 @@
         android:id="@+id/labelNotThing"
         android:layout_centerInParent="true"
         android:textAlignment="center"
+
+        android:layout_marginTop="10sp"
         android:visibility="gone"/>
     <include
         android:layout_below="@id/title_header"
+        android:layout_centerInParent="true"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/include_pin"

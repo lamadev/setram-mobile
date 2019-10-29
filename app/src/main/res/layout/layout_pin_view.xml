@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
+    android:background="@drawable/button_style"
     tools:context="betsaleel.setram.com.setrambank.AccountListActivity"
     tools:showIn="@layout/activity_account_list">
 
