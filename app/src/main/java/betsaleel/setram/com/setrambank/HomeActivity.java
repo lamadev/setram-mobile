@@ -332,7 +332,7 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
            //Toast.makeText(HomeActivity.this, "ACtualiser Id:"+item.getOrder(), Toast.LENGTH_LONG).show();
-           // final String url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/loginController.php?idcompte="+AccountInfo.idAccount+"&pin="+AccountInfo.pin;
+           //final String url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/loginController.php?idcompte="+AccountInfo.idAccount+"&pin="+AccountInfo.pin;
             final String url=networker.getLoginUrlFormatted(AccountInfo.idAccount,AccountInfo.pin);
             //Toast.makeText(HomeActivity.this,"RESPONSE:"+url,Toast.LENGTH_LONG).show();
             configuration=new Configuration();
@@ -343,7 +343,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void queryResult(Object result) {
                         try{
                             if (result instanceof JSONObject){
-
+                               // Toast.makeText(HomeActivity.this, "RESULT:"+((JSONObject) result).toString(), Toast.LENGTH_SHORT).show();
                                 AccountInfo.AccountNum=((JSONObject)result).getJSONObject("data").getString("accountNum");
                                 AccountInfo.pin=((JSONObject)result).getJSONObject("data").getString("pin");
                                 AccountInfo.idAccount=((JSONObject)result).getJSONObject("data").getString("IdCompte");
@@ -410,7 +410,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (AccountInfo.pin.equals(pinSender.trim())){
                                 if (Double.parseDouble(Amount)<amountClient  ){
                                    // String http_url="http://www.agriprombtc.com/svptest/codes/serveur/ServeurTransfert_Mobile.php?IdCompteE="+idAccount+"&IdCompteB="+NumAccountReceiver+"&MontantTransfert="+Amount+"&CodeMonnaietrans="+devise+"&Moyen=MOBILE&idagent=0&IdAgence=0&PIN="+AccountInfo.pin;
-                                    //String http_url="http://www.betsaleeltech.com/setramvip/codes/serveur/ServeurTransfert_Mobile.php?IdCompteE="+idAccount+"&IdCompteB="+NumAccountReceiver+"&MontantTransfert="+Amount+"&CodeMonnaietrans="+devise+"&Moyen=MOBILE&idagent=0&IdAgence=0&PIN="+AccountInfo.pin+"&CodeTypeCompte=Standard";
+                                //    String http_url="http://www.betsaleeltech.com/setramvip/codes/serveur/ServeurTransfert_Mobile.php?IdCompteE="+idAccount+"&IdCompteB="+NumAccountReceiver+"&MontantTransfert="+Amount+"&CodeMonnaietrans="+devise+"&Moyen=MOBILE&idagent=0&IdAgence=0&PIN="+AccountInfo.pin+"&CodeTypeCompte=Standard";
                                     String http_url=networker.getTransferUrlFormatted
                                                    (
                                                       idAccount,
@@ -424,6 +424,7 @@ public class HomeActivity extends AppCompatActivity {
                                                            "Standard"
 
                                                    ) ;
+
                                     // Toast.makeText(HomeActivity.this, "URL:"+http_url, Toast.LENGTH_SHORT).show();
                                     configuration=new Configuration();
                                     boolean isConnected=configuration.statusConnectivity(getApplicationContext());
@@ -621,12 +622,14 @@ public class HomeActivity extends AppCompatActivity {
                                     //Toast.makeText(HomeActivity.this, "OK", Toast.LENGTH_SHORT).show();
                                     //String http_url="http://"+ networker.ipServer+"setram_vip/codes/serveur/api/pinController.php?account="+ AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
                                     //String http_url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/pinController.php?account="+AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
+
                                     String http_url=networker.getUpdateLoginUrlFormatted
                                             (
                                             AccountInfo.AccountNum,
                                             old_pin.getText().toString(),
                                             new_pin.getText().toString()
                                              );
+
                                     //Toast.makeText(HomeActivity.this, "URL:"+http_url, Toast.LENGTH_LONG).show();
 
                                   HomeActivity.QueryPinAuth queryPinAuth=new HomeActivity.QueryPinAuth(http_url, HomeActivity.this,"Sécurité", new AsyncCallback() {

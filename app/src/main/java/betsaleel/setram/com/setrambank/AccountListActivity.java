@@ -135,7 +135,7 @@ public class AccountListActivity extends AppCompatActivity {
                 element = new HashMap<String, String>();
                 String account2="xxx-"+m.get("name").substring(3);
                 element.put("account",account2);
-            //    element.put("num",(ActualLang.equals("por")?"Número da conta":"Numero compte"));
+                //element.put("num",(ActualLang.equals("por")?"Número da conta":"Numero compte"));
                 liste.add(element);
 
             }
@@ -146,7 +146,7 @@ public class AccountListActivity extends AppCompatActivity {
 
                     new String[] {"account"},
 
-                    new int[] {android.R.id.text1 });
+                    new int[] {android.R.id.text1, android.R.id.text2 });
 
             listView.setAdapter(adapter);
 
@@ -463,8 +463,8 @@ public class AccountListActivity extends AppCompatActivity {
                         builder.setPositiveButton(ActualLang.equals("fr")?"CONNEXION":"CONEXÃO", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                //final String url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/loginController.php?numcompte="+accountAddList.getText().toString().trim()+"&pin="+pinAddList.getText().toString().trim();
-                                final String url=networker.getLoginUrlFormatted(accountAddList.getText().toString(),pinAddList.getText().toString());
+                               //  final String url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/loginController.php?numcompte="+accountAddList.getText().toString().trim()+"&pin="+pinAddList.getText().toString().trim();
+                                final String url=networker.getLoginAddedUrlFormatted(accountAddList.getText().toString(),pinAddList.getText().toString());
                                 //Toast.makeText(MainActivity.this,"RESPONSE:"+url,Toast.LENGTH_LONG).show();
 
                                 new QueryPinAuth(url, AccountListActivity.this, new AsyncCallback() {
@@ -521,6 +521,7 @@ public class AccountListActivity extends AppCompatActivity {
                         //Toast.makeText(AccountListActivity.this, "Create!!", Toast.LENGTH_SHORT).show();
 
 
+
                        // String url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/pinController.php?account="+account.getText().toString()+"&old="+oldPin.getText().toString()+"&new="+newPin.getText().toString();
                         String url= networker.getUpdateLoginUrlFormatted
                                 (
@@ -528,6 +529,7 @@ public class AccountListActivity extends AppCompatActivity {
                                         oldPin.getText().toString(),
                                         newPin.getText().toString()
                                 );
+
                         new QueryPinAuth(url, AccountListActivity.this, new AsyncCallback() {
                             @Override
                             public void queryResult(Object result) {

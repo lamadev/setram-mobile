@@ -13,6 +13,11 @@ public class networker {
     public static  String getLoginUrlFormatted(String idcompte,String password){
         return  URL+"loginController.php?idcompte="+idcompte+"&pin="+password;
     }
+
+    public static  String getLoginAddedUrlFormatted(String idcompte,String password){
+        return  URL+"loginController.php?numcompte="+idcompte+"&pin="+password;
+    }
+
     public static  String getUpdateLoginUrlFormatted(String account,String oldpwd,String newpwd){
         return  URL+"pinController.php?account="+account+"&old="+oldpwd+"&new="+newpwd;
     }
