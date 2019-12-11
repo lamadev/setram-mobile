@@ -278,10 +278,54 @@ public class AccountListActivity extends AppCompatActivity {
                         int status=object.getJSONObject("response").getInt("status");
                         //Toast.makeText(_ctx,"Status :"+Integer.toString(status),Toast.LENGTH_LONG).show();
                         if (status!=200){
-                            delegate.queryResult(false);
+                            switch (status){
+                                case 205:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 206:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 207:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 208:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 209:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 210:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                            }
                             // Toast.makeText(getApplicationContext(),"RESPONSE:"+response,Toast.LENGTH_LONG).show();
 
                         }else{
+
                             //Toast.makeText(getApplicationContext(),"RESPONSE:"+response,Toast.LENGTH_LONG).show();
                             delegate.queryResult(object);
                         }
@@ -504,6 +548,7 @@ public class AccountListActivity extends AppCompatActivity {
                                                 Intent iDash=new Intent(AccountListActivity.this,HomeActivity.class);
                                                 startActivity(iDash);
                                             }else{
+
                                                 Toast.makeText(AccountListActivity.this,(ActualLang.equals("por")?"Autenticação rejeitada":"Authentification réjetée"),Toast.LENGTH_LONG)
                                                         .show();
                                             }

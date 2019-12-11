@@ -146,7 +146,51 @@ public class dashboard extends AppCompatActivity {
                     int status=object.getJSONObject("response").getInt("status");
                     //Toast.makeText(_ctx,"Status :"+Integer.toString(status),Toast.LENGTH_LONG).show();
                     if (status!=200){
-                        delegate.queryResult(false);
+                        switch (status){
+                            case 205:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 206:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 207:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 208:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 209:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 210:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                        }
+                        //delegate.queryResult(false);
                     }else{
                         delegate.queryResult(object);
                     }
@@ -450,7 +494,7 @@ public class dashboard extends AppCompatActivity {
                    txDevise.setText(jsonObject.getJSONObject("data").getString("currency"));
                    TextView txAccount=(TextView)layout_view.findViewById(R.id.textViewNum);
                    txAccount.setTypeface(face);
-                   txAccount.setText(jsonObject.getJSONObject("data").getString("balance"));
+                   //txAccount.setText(jsonObject.getJSONObject("data").getString("balance"));
                    AlertDialog dialog=builder.create();
                    dialog.show();
                }catch (Exception e){

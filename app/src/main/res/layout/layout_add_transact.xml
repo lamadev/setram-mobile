@@ -79,7 +79,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="500"
+            android:text="0"
+            android:textStyle="bold"
             android:textSize="16dp"
             android:textColor="@android:color/black"/>
     </LinearLayout>

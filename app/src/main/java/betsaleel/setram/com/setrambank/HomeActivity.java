@@ -165,7 +165,51 @@ public class HomeActivity extends AppCompatActivity {
                     int status=object.getJSONObject("response").getInt("status");
                     //Toast.makeText(_ctx,"Status :"+Integer.toString(status),Toast.LENGTH_LONG).show();
                     if (status!=200){
-                        delegate.queryResult(false);
+                       // delegate.queryResult(false);
+                        switch (status){
+                            case 205:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 206:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 207:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 208:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 209:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 210:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                        }
                     }else{
                         delegate.queryResult(object);
                     }
@@ -263,7 +307,51 @@ public class HomeActivity extends AppCompatActivity {
                     int status=object.getJSONObject("response").getInt("status");
                     //Toast.makeText(_ctx,"Status :"+Integer.toString(status),Toast.LENGTH_LONG).show();
                     if (status!=200){
-                        delegate.queryResult(false);
+                      //  delegate.queryResult(false);
+                        switch (status){
+                            case 205:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 206:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 207:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 208:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 209:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                            case 210:
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        object.getJSONObject("response").getString("Erreur"),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                        }
                     }else{
                         delegate.queryResult(object);
                     }
@@ -492,7 +580,7 @@ public class HomeActivity extends AppCompatActivity {
                 txDevise.setTypeface(face);
                 txDevise.setText(jsonObject.getJSONObject("data").getString("currency"));
                 TextView txAccount=(TextView)layout_view.findViewById(R.id.textViewNum);
-                txAccount.setTypeface(face);
+               // txAccount.setTypeface(face);
                 txAccount.setText(jsonObject.getJSONObject("data").getString("balance"));
                 AlertDialog dialog=builder.create();
                 dialog.show();
