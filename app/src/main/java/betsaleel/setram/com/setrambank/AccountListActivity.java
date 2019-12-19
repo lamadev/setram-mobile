@@ -321,6 +321,10 @@ public class AccountListActivity extends AppCompatActivity {
                                             Toast.LENGTH_LONG
                                     ).show();
                                     break;
+                                    default:
+                                        Toast.makeText(AccountListActivity.this,ActualLang.equals("fr")?"Authentfication réjétée":"Autenticação rejeitada",Toast.LENGTH_LONG)
+                                                .show();
+                                        break;
                             }
                             // Toast.makeText(getApplicationContext(),"RESPONSE:"+response,Toast.LENGTH_LONG).show();
 

@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -124,28 +126,32 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected View doInBackground(Void... voids) {
 
-            try {
-                String line="";
-                uri=new URL(this._url);
-                urlConnection=uri.openConnection();
-                httpCnx=(HttpURLConnection)urlConnection;
-                httpCnx.setRequestMethod("GET");
-                httpCnx.setDoInput(true);
-                //httpCnx.connect();
-                InputStream is=httpCnx.getInputStream();
-                BufferedReader reader=new BufferedReader(new InputStreamReader(is));
-                response="";
-                while((line=reader.readLine())!=null){
-                    response+=reader.readLine();
+                try {
+                    String line = "";
+                    uri = new URL(this._url);
+                    urlConnection = uri.openConnection();
+                    httpCnx = (HttpURLConnection) urlConnection;
+                    httpCnx.setRequestMethod("GET");
+                    httpCnx.setDoInput(true);
+                    //httpCnx.connect();
+                    InputStream is = httpCnx.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                    response = "";
+                    while ((line = reader.readLine()) != null) {
+                        response += reader.readLine();
+                    }
+                    httpCnx.disconnect();
+
+                } catch (MalformedURLException e) {
+                    Toast.makeText(_ctx, "Http ULR:" + e.getMessage(), Toast.LENGTH_LONG).show();
+
+                } catch (IOException e) {
+                    Toast.makeText(_ctx, e.getMessage(), Toast.LENGTH_LONG).show();
+                }catch (Exception e){
+                    Toast.makeText(_ctx, AccountListActivity.ActualLang.equals("fr") ? "Pas de connexion internet disponible" : "Nenhuma conexão com a internet disponível", Toast.LENGTH_LONG).show();
                 }
-                httpCnx.disconnect();
 
-            } catch (MalformedURLException e) {
-                Toast.makeText(_ctx,"Http ULR:"+e.getMessage(),Toast.LENGTH_LONG).show();
 
-            } catch (IOException e) {
-                Toast.makeText(_ctx,e.getMessage(),Toast.LENGTH_LONG).show();
-            }
 
 
             return null;
@@ -243,27 +249,32 @@ public class HomeActivity extends AppCompatActivity {
         }
         @Override
         protected void onPreExecute(){
-            progressDialog=new ProgressDialog(_ctx);
+            try{
+                progressDialog=new ProgressDialog(_ctx);
 
-            if(this.hd.equals("Transaction")){
-                progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Transação":this.hd);
-                progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Transação em andamento":"Transaction en cours");
-            }
-            if (this.hd.equals("Actualiser")){
-                progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Atualize":this.hd);
-                progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Atualize a lista de transações":"Actualiser la liste des transactions");
-            }
-            if(this.hd.equals("Sécurité")){
-                progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Segurança":this.hd);
-                progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Atualização em andamento":"Mise à jour en cours....");
-            }
-            if (this.hd.equals("solde")){
-                progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Saldo de carregamento":"Chargement solde");
-                progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Carregando":"Chargement en cours");
-            }
+                if(this.hd.equals("Transaction")){
+                    progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Transação":this.hd);
+                    progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Transação em andamento":"Transaction en cours");
+                }
+                if (this.hd.equals("Actualiser")){
+                    progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Atualize":this.hd);
+                    progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Atualize a lista de transações":"Actualiser la liste des transactions");
+                }
+                if(this.hd.equals("Sécurité")){
+                    progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Segurança":this.hd);
+                    progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Atualização em andamento":"Mise à jour en cours....");
+                }
+                if (this.hd.equals("solde")){
+                    progressDialog.setTitle(AccountListActivity.ActualLang.equals("por")?"Saldo de carregamento":"Chargement solde");
+                    progressDialog.setMessage(AccountListActivity.ActualLang.equals("por")?"Carregando":"Chargement en cours");
+                }
 
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+            }catch (Exception e){
+                Toast.makeText(HomeActivity.this, AccountListActivity.ActualLang.equals("fr")?"Pas de connexion internet disponible":"Nenhuma conexão com a internet disponível", Toast.LENGTH_SHORT).show();
+
+            }
         }
         @Override
         protected View doInBackground(Void... voids) {
@@ -288,6 +299,8 @@ public class HomeActivity extends AppCompatActivity {
 
             } catch (IOException e) {
                 Toast.makeText(_ctx,e.getMessage(),Toast.LENGTH_LONG).show();
+            }catch (Exception e){
+                Toast.makeText(HomeActivity.this, AccountListActivity.ActualLang.equals("fr")?"Pas de connexion internet disponible":"Nenhuma conexão com a internet disponível", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -296,74 +309,80 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(View view){
-            if (progressDialog.isShowing()){
-                progressDialog.dismiss();
-                // Toast.makeText(_ctx, "Response:"+response, Toast.LENGTH_SHORT).show();
-                try {
+            try{
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                    // Toast.makeText(_ctx, "Response:"+response, Toast.LENGTH_SHORT).show();
+                    try {
 
-                    JSONObject object=new JSONObject(response);
-                    HomeActivity.jsonObject=object;
-                    //Toast.makeText(_ctx, "JSON Datas:"+HomeActivity.jsonObject.toString(), Toast.LENGTH_SHORT).show();
-                    int status=object.getJSONObject("response").getInt("status");
-                    //Toast.makeText(_ctx,"Status :"+Integer.toString(status),Toast.LENGTH_LONG).show();
-                    if (status!=200){
-                      //  delegate.queryResult(false);
-                        switch (status){
-                            case 205:
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        object.getJSONObject("response").getString("Erreur"),
-                                        Toast.LENGTH_LONG
-                                ).show();
-                                break;
-                            case 206:
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        object.getJSONObject("response").getString("Erreur"),
-                                        Toast.LENGTH_LONG
-                                ).show();
-                                break;
-                            case 207:
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        object.getJSONObject("response").getString("Erreur"),
-                                        Toast.LENGTH_LONG
-                                ).show();
-                                break;
-                            case 208:
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        object.getJSONObject("response").getString("Erreur"),
-                                        Toast.LENGTH_LONG
-                                ).show();
-                                break;
-                            case 209:
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        object.getJSONObject("response").getString("Erreur"),
-                                        Toast.LENGTH_LONG
-                                ).show();
-                                break;
-                            case 210:
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        object.getJSONObject("response").getString("Erreur"),
-                                        Toast.LENGTH_LONG
-                                ).show();
-                                break;
+                        JSONObject object=new JSONObject(response);
+                        HomeActivity.jsonObject=object;
+                        //Toast.makeText(_ctx, "JSON Datas:"+HomeActivity.jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                        int status=object.getJSONObject("response").getInt("status");
+                        //Toast.makeText(_ctx,"Status :"+Integer.toString(status),Toast.LENGTH_LONG).show();
+                        if (status!=200){
+                            //  delegate.queryResult(false);
+                            switch (status){
+                                case 205:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 206:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 207:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 208:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 209:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                                case 210:
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            object.getJSONObject("response").getString("Erreur"),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    break;
+                            }
+                        }else{
+                            delegate.queryResult(object);
                         }
-                    }else{
-                        delegate.queryResult(object);
+                    } catch (JSONException e) {
+                        Toast.makeText(_ctx, "JSON Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // e.printStackTrace();
+                    }catch(Exception e){
+                        // Toast.makeText(_ctx, "Other Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+
                     }
-                } catch (JSONException e) {
-                    Toast.makeText(_ctx, "JSON Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    // e.printStackTrace();
-                }catch(Exception e){
-                   // Toast.makeText(_ctx, "Other Exception:"+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
+            }catch (Exception e){
+                Toast.makeText(HomeActivity.this, AccountListActivity.ActualLang.equals("fr")?"Pas de connexion internet disponible":"Nenhuma conexão com a internet disponível", Toast.LENGTH_SHORT).show();
 
             }
+
         }
     }
     @Override
@@ -380,9 +399,13 @@ public class HomeActivity extends AppCompatActivity {
         MenuItem itemMoney=menu.getItem(1);
         itemMoney.setTitle((AccountListActivity.ActualLang.equals("por")?"Atualização":getResources().getString(R.string.action_settings)));
 
+        MenuItem itemQuit=menu.getItem(2);
+        itemQuit.setTitle((AccountListActivity.ActualLang.equals("por")?"Saída":getResources().getString(R.string.action_quit)));
+
         return true;
     }
-    private void RefreshAccount(String url){
+    private void RefreshAccount(){
+        final String url=networker.getLoginUrlFormatted(AccountInfo.idAccount,AccountInfo.pin);
         new QueryPinAuth(url, HomeActivity.this, "Actualiser", new AsyncCallback() {
             @Override
             public void queryResult(Object result) {
@@ -458,7 +481,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
             return true;
-        }else{
+        }else if (id == R.id.action_add_transact){
             try{
 
                 LayoutInflater layout_inflater=LayoutInflater.from(HomeActivity.this);
@@ -585,10 +608,13 @@ public class HomeActivity extends AppCompatActivity {
                 AlertDialog dialog=builder.create();
                 dialog.show();
             }catch (Exception e){
-                Toast.makeText(getApplicationContext(), "Erreur :"+e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(HomeActivity.this, AccountListActivity.ActualLang.equals("fr")?"Pas de connexion internet disponible":"Nenhuma conexão com a internet disponível", Toast.LENGTH_SHORT).show();
             }
            // Toast.makeText(HomeActivity.this, " Not Action clicked", Toast.LENGTH_LONG).show();
 
+        }else{
+            Intent iLog=new Intent(HomeActivity.this,AccountListActivity.class);
+            startActivity(iLog);
         }
 
         return super.onOptionsItemSelected(item);
@@ -602,11 +628,13 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(0);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         //toolbar.setNavigationIcon(R.drawable.iconnav);
+        this.RefreshAccount();
+
         AdapterDB db=new AdapterDB(getApplicationContext());
         db.OpenDB();
         try {
-            HomeActivity.jsonObject=new JSONObject(db.getLogs(db.getCurrentUser()));
-        } catch (JSONException e) {
+          //  HomeActivity.jsonObject=new JSONObject(db.getLogs(db.getCurrentUser()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //Toast.makeText(getApplicationContext(), "Language actual :"+db.getCurrentLanguage(), Toast.LENGTH_SHORT).show();
@@ -653,202 +681,226 @@ public class HomeActivity extends AppCompatActivity {
         list_param.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                try{
-                    if (i==2){
-                        String id=HomeActivity.jsonObject.getJSONObject("data").getString("IdCompte");
-                        String pin=HomeActivity.jsonObject.getJSONObject("data").getString("pin");
-                        String urlServer=networker.getLoginUrlFormatted(id,pin);
-                      //  Toast.makeText(HomeActivity.this, urlServer, Toast.LENGTH_LONG).show();
-                         new QueryPinAuth(urlServer, HomeActivity.this, "solde", new AsyncCallback() {
-                            @Override
-                            public void queryResult(Object result) {
-                                HomeActivity.jsonObject=(JSONObject)result;
-                                getTransact();
-                                String solde= null;
-                                try {
-                                    solde = HomeActivity.jsonObject.getJSONObject("data").getString("balance")+" "+jsonObject.getJSONObject("data").getString("codeCurrency").toUpperCase();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
-                                builder.setMessage(AccountListActivity.ActualLang.equals("por")?"Seu saldo bancário é : "+solde+"":"Votre solde est de : "+solde+"");
-                                builder.setTitle(AccountListActivity.ActualLang.equals("por")?"SEU BALANÇO DO BANCO":"VOTRE SOLDE");
-                                builder.setCancelable(true);
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                boolean haveConnectedWifi = false;
+                boolean haveConnectedMobile = false;
+
+                ConnectivityManager cm = (ConnectivityManager) HomeActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+                for (NetworkInfo ni : netInfo) {
+                    if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                        if (ni.isConnected())
+                            haveConnectedWifi = true;
+                    if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                        if (ni.isConnected())
+                            haveConnectedMobile = true;
+                }
+                if(haveConnectedWifi || haveConnectedMobile){
+                    try{
+                        if (i==2){
+                            String id=HomeActivity.jsonObject.getJSONObject("data").getString("IdCompte");
+                            String pin=HomeActivity.jsonObject.getJSONObject("data").getString("pin");
+                            String urlServer=networker.getLoginUrlFormatted(id,pin);
+                            //Toast.makeText(HomeActivity.this, "MON SOLDE!!!", Toast.LENGTH_LONG).show();
+                            try{
+
+                                new QueryPinAuth(urlServer, HomeActivity.this, "solde", new AsyncCallback() {
                                     @Override
-
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-
-                                    }
-                                });
-                                AlertDialog dialog=builder.create();
-                                dialog.show();
-                            }
-                        }).execute();
-
-                    }else if(i==0){
-                        final LayoutInflater layout_inflater=LayoutInflater.from(HomeActivity.this);
-                        final View layout_view=layout_inflater.inflate(R.layout.layout_change_pin,null);
-                        AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
-                        builder.setTitle(AccountListActivity.ActualLang.equals("por")?"Segurança: Mude seu pin":"Securité: Changer votre pin");
-                        builder.setView(layout_view);
-                        builder.setCancelable(true);
-                        tv=(TextView)layout_view.findViewById(R.id.toldPin);
-                        tv.setText(AccountListActivity.ActualLang.equals("por")?"Digite seu código antigo":"Entrez votre ancien pin");
-                        tv=(TextView)layout_view.findViewById(R.id.tnewPin);
-                        tv.setText(AccountListActivity.ActualLang.equals("por")?"Digite seu novo código":"Entrez votre ancien pin");
-                        builder.setPositiveButton(AccountListActivity.ActualLang.equals("por")?"CONFIRMAR":"VALIDER", new DialogInterface.OnClickListener() {
-                            @Override
-
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                final EditText old_pin=(EditText)layout_view.findViewById(R.id.tx_old_pin_change);
-                                final EditText new_pin=(EditText)layout_view.findViewById(R.id.tx_nwe_pin_change);
-
-                                if (old_pin.getText().toString().equals(AccountInfo.pin)){
-                                    //Toast.makeText(HomeActivity.this, "OK", Toast.LENGTH_SHORT).show();
-                                    //String http_url="http://"+ networker.ipServer+"setram_vip/codes/serveur/api/pinController.php?account="+ AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
-                                    //String http_url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/pinController.php?account="+AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
-
-                                    String http_url=networker.getUpdateLoginUrlFormatted
-                                            (
-                                            AccountInfo.AccountNum,
-                                            old_pin.getText().toString(),
-                                            new_pin.getText().toString()
-                                             );
-
-                                    //Toast.makeText(HomeActivity.this, "URL:"+http_url, Toast.LENGTH_LONG).show();
-
-                                  HomeActivity.QueryPinAuth queryPinAuth=new HomeActivity.QueryPinAuth(http_url, HomeActivity.this,"Sécurité", new AsyncCallback() {
-                                        @Override
-                                        public void queryResult(Object result) {
-                                            if (result instanceof JSONObject){
-                                                HomeActivity.jsonObject=(JSONObject) result;
-                                                Snackbar.make(HomeActivity.this.getCurrentFocus(),AccountListActivity.ActualLang.equals("fr")?"Votre pin a été modifié":"Seu pin foi modificado",Snackbar.LENGTH_LONG).show();
-                                                AdapterDB db=new AdapterDB(HomeActivity.this);
-                                                db.OpenDB();
-                                                db.UpdateKeyPin(old_pin.getText().toString(),new_pin.getText().toString());
-                                                AccountInfo.pin=new_pin.getText().toString();
-                                                //Toast.makeText(dashboard.this, "Response:"+result.toString(), Toast.LENGTH_SHORT).show();
-                                            }
+                                    public void queryResult(Object result) {
+                                        HomeActivity.jsonObject=(JSONObject)result;
+                                        getTransact();
+                                        String solde= null;
+                                        try {
+                                            solde = HomeActivity.jsonObject.getJSONObject("data").getString("balance")+" "+jsonObject.getJSONObject("data").getString("codeCurrency").toUpperCase();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
-                                    });
-                                    configuration=new Configuration();
-                                    boolean isConnected=configuration.statusConnectivity(getApplicationContext());
-                                    if (isConnected){
-                                        queryPinAuth.execute();
-                                    }else{
-                                        Toast.makeText(HomeActivity.this, AccountListActivity.ActualLang.equals("fr")?"Pas de connexion internet disponible":"Nenhuma conexão com a internet disponível", Toast.LENGTH_SHORT).show();
+                                        AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
+                                        builder.setMessage(AccountListActivity.ActualLang.equals("por")?"Seu saldo bancário é : "+solde+"":"Votre solde est de : "+solde+"");
+                                        builder.setTitle(AccountListActivity.ActualLang.equals("por")?"SEU BALANÇO DO BANCO":"VOTRE SOLDE");
+                                        builder.setCancelable(true);
+                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+
+                                            }
+                                        });
+                                        AlertDialog dialog=builder.create();
+                                        dialog.show();
+                                    }
+                                }).execute();
+                            }catch(Exception e){
+                                Toast.makeText(HomeActivity.this, AccountListActivity.ActualLang.equals("fr")?"Pas de connexion internet disponible":"Nenhuma conexão com a internet disponível", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }else if(i==0){
+                            final LayoutInflater layout_inflater=LayoutInflater.from(HomeActivity.this);
+                            final View layout_view=layout_inflater.inflate(R.layout.layout_change_pin,null);
+                            AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
+                            builder.setTitle(AccountListActivity.ActualLang.equals("por")?"Segurança: Mude seu pin":"Securité: Changer votre pin");
+                            builder.setView(layout_view);
+                            builder.setCancelable(true);
+                            tv=(TextView)layout_view.findViewById(R.id.toldPin);
+                            tv.setText(AccountListActivity.ActualLang.equals("por")?"Digite seu código antigo":"Entrez votre ancien pin");
+                            tv=(TextView)layout_view.findViewById(R.id.tnewPin);
+                            tv.setText(AccountListActivity.ActualLang.equals("por")?"Digite seu novo código":"Entrez votre ancien pin");
+                            builder.setPositiveButton(AccountListActivity.ActualLang.equals("por")?"CONFIRMAR":"VALIDER", new DialogInterface.OnClickListener() {
+                                @Override
+
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    final EditText old_pin=(EditText)layout_view.findViewById(R.id.tx_old_pin_change);
+                                    final EditText new_pin=(EditText)layout_view.findViewById(R.id.tx_nwe_pin_change);
+
+                                    if (old_pin.getText().toString().equals(AccountInfo.pin)){
+                                        //Toast.makeText(HomeActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                                        //String http_url="http://"+ networker.ipServer+"setram_vip/codes/serveur/api/pinController.php?account="+ AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
+                                        //String http_url="http://www.betsaleeltech.com/setramvip/codes/serveur/api/pinController.php?account="+AccountInfo.AccountNum+"&old="+old_pin.getText().toString()+"&new="+new_pin.getText().toString()+"";
+
+                                        String http_url=networker.getUpdateLoginUrlFormatted
+                                                (
+                                                        AccountInfo.AccountNum,
+                                                        old_pin.getText().toString(),
+                                                        new_pin.getText().toString()
+                                                );
+
+                                        //Toast.makeText(HomeActivity.this, "URL:"+http_url, Toast.LENGTH_LONG).show();
+
+                                        HomeActivity.QueryPinAuth queryPinAuth=new HomeActivity.QueryPinAuth(http_url, HomeActivity.this,"Sécurité", new AsyncCallback() {
+                                            @Override
+                                            public void queryResult(Object result) {
+                                                if (result instanceof JSONObject){
+                                                    HomeActivity.jsonObject=(JSONObject) result;
+                                                    Snackbar.make(HomeActivity.this.getCurrentFocus(),AccountListActivity.ActualLang.equals("fr")?"Votre pin a été modifié":"Seu pin foi modificado",Snackbar.LENGTH_LONG).show();
+                                                    AdapterDB db=new AdapterDB(HomeActivity.this);
+                                                    db.OpenDB();
+                                                    db.UpdateKeyPin(old_pin.getText().toString(),new_pin.getText().toString());
+                                                    AccountInfo.pin=new_pin.getText().toString();
+                                                    //Toast.makeText(dashboard.this, "Response:"+result.toString(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                        configuration=new Configuration();
+                                        boolean isConnected=configuration.statusConnectivity(getApplicationContext());
+                                        if (isConnected){
+                                            queryPinAuth.execute();
+                                        }else{
+                                            Toast.makeText(HomeActivity.this, AccountListActivity.ActualLang.equals("fr")?"Pas de connexion internet disponible":"Nenhuma conexão com a internet disponível", Toast.LENGTH_SHORT).show();
+                                        }
+
+
+
+
+                                    }else {
+                                        Snackbar.make(HomeActivity.this.getCurrentFocus(),AccountListActivity.ActualLang.equals("fr")?"Votre ancien pin est invalide, réessayez svp":"O seu pin antigo é inválido, por favor tente novamente",Snackbar.LENGTH_LONG).show();
                                     }
 
+                                }
+                            });
 
+                            AlertDialog dialog=builder.create();
+                            dialog.show();
+                        }else if(i==1){
+                            LayoutInflater layout_inflater= LayoutInflater.from(HomeActivity.this);
+                            final View layout_view=layout_inflater.inflate(R.layout.layout_langs,null);
+                            Spinner spin = (Spinner) layout_view.findViewById(R.id.spinLang);
+                            final List<String> categories = new ArrayList<String>();
+                            categories.add("Français");
+                            categories.add("Portugais");
+                            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_spinner_item, categories);
+                            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spin.setAdapter(dataAdapter);
 
-
-                                }else {
-                                    Snackbar.make(HomeActivity.this.getCurrentFocus(),AccountListActivity.ActualLang.equals("fr")?"Votre ancien pin est invalide, réessayez svp":"O seu pin antigo é inválido, por favor tente novamente",Snackbar.LENGTH_LONG).show();
+                            if(AccountListActivity.ActualLang.equals("fr")){
+                                spin.setSelection(0);
+                            }else{
+                                spin.setSelection(1);
+                            }
+                            spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    choiceLang=categories.get(i).toString();
                                 }
 
-                            }
-                        });
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
 
-                        AlertDialog dialog=builder.create();
-                        dialog.show();
-                    }else{
-                        LayoutInflater layout_inflater= LayoutInflater.from(HomeActivity.this);
-                        final View layout_view=layout_inflater.inflate(R.layout.layout_langs,null);
-                        Spinner spin = (Spinner) layout_view.findViewById(R.id.spinLang);
-                        final List<String> categories = new ArrayList<String>();
-                        categories.add("Français");
-                        categories.add("Portugais");
-                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_spinner_item, categories);
-                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spin.setAdapter(dataAdapter);
+                                }
+                            });
+                            final AdapterDB adb=new AdapterDB(getApplicationContext());
+                            AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
+                            builder.setView(layout_view);
+                            builder.setTitle(AccountListActivity.ActualLang.equals("fr")?"Choisir la langue":"Escolher idioma");
+                            builder.setCancelable(true);
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if(choiceLang.equals("Français")){
+                                        AccountListActivity.ActualLang="fr";
+                                        adb.OpenDB();
+                                        adb.UpdateLanguage(AccountInfo.idAccount,AccountListActivity.ActualLang);
+                                        tv=(TextView)findViewById(R.id.tvHeaderTransacts);
+                                        tv.setText((AccountListActivity.ActualLang.equals("por")?"Diário transações":"Journal transactions"));
+                                        Typeface face = Typeface.createFromAsset(getAssets(),
+                                                "fonts/Roboto-Thin.ttf");
+                                        tv.setTypeface(face);
 
-                        if(AccountListActivity.ActualLang.equals("fr")){
-                            spin.setSelection(0);
-                        }else{
-                            spin.setSelection(1);
+                                        tv=(TextView)findViewById(R.id.tvHeaderAgencies);
+                                        tv.setText((AccountListActivity.ActualLang.equals("por")?"Agências":"Les agences"));
+                                        tv.setTypeface(face);
+
+
+                                        tv=(TextView)findViewById(R.id.tvHeaderTarifs);
+                                        tv.setText((AccountListActivity.ActualLang.equals("por")?"Custos de transferência":"Coûts transferts"));
+                                        tv.setTypeface(face);
+
+
+                                        tv=(TextView)findViewById(R.id.tvHeaderParam);
+                                        tv.setText((AccountListActivity.ActualLang.equals("por")?"configurações":"Paramétrage"));
+                                        tv.setTypeface(face);
+                                        getParam();
+
+                                    }else{
+                                        AccountListActivity.ActualLang="por";
+                                        adb.OpenDB();
+                                        adb.UpdateLanguage(AccountInfo.idAccount,AccountListActivity.ActualLang);
+                                        tv=(TextView)findViewById(R.id.tvHeaderTransacts);
+                                        tv.setText((AccountListActivity.ActualLang.equals("por")?"Diário transações":"Journal transactions"));
+                                        Typeface face = Typeface.createFromAsset(getAssets(),
+                                                "fonts/Roboto-Thin.ttf");
+                                        tv.setTypeface(face);
+
+                                        tv=(TextView)findViewById(R.id.tvHeaderAgencies);
+                                        tv.setText((AccountListActivity.ActualLang.equals("por")?"Agências":"Les agences"));
+                                        tv.setTypeface(face);
+
+
+                                        tv=(TextView)findViewById(R.id.tvHeaderTarifs);
+                                        tv.setText((AccountListActivity.ActualLang.equals("por")?"Custos de transferência":"Coûts transferts"));
+                                        tv.setTypeface(face);
+
+
+                                        tv=(TextView)findViewById(R.id.tvHeaderParam);
+                                        tv.setText((AccountListActivity.ActualLang.equals("por")?"configurações":"Paramétrage"));
+                                        tv.setTypeface(face);
+                                        getParam();
+                                    }
+                                    adb.CloseDB();
+
+                                }
+                            });
+                            AlertDialog dialog=builder.create();
+                            dialog.show();
                         }
-                        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                choiceLang=categories.get(i).toString();
-                            }
+                    }catch(Exception e){
 
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-
-                            }
-                        });
-                        final AdapterDB adb=new AdapterDB(getApplicationContext());
-                        AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
-                        builder.setView(layout_view);
-                        builder.setTitle(AccountListActivity.ActualLang.equals("fr")?"Choisir la langue":"Escolher idioma");
-                        builder.setCancelable(true);
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if(choiceLang.equals("Français")){
-                                    AccountListActivity.ActualLang="fr";
-                                    adb.OpenDB();
-                                    adb.UpdateLanguage(AccountInfo.idAccount,AccountListActivity.ActualLang);
-                                    tv=(TextView)findViewById(R.id.tvHeaderTransacts);
-                                    tv.setText((AccountListActivity.ActualLang.equals("por")?"Diário transações":"Journal transactions"));
-                                    Typeface face = Typeface.createFromAsset(getAssets(),
-                                            "fonts/Roboto-Thin.ttf");
-                                    tv.setTypeface(face);
-
-                                    tv=(TextView)findViewById(R.id.tvHeaderAgencies);
-                                    tv.setText((AccountListActivity.ActualLang.equals("por")?"Agências":"Les agences"));
-                                    tv.setTypeface(face);
-
-
-                                    tv=(TextView)findViewById(R.id.tvHeaderTarifs);
-                                    tv.setText((AccountListActivity.ActualLang.equals("por")?"Custos de transferência":"Coûts transferts"));
-                                    tv.setTypeface(face);
-
-
-                                    tv=(TextView)findViewById(R.id.tvHeaderParam);
-                                    tv.setText((AccountListActivity.ActualLang.equals("por")?"configurações":"Paramétrage"));
-                                    tv.setTypeface(face);
-                                    getParam();
-
-                                }else{
-                                    AccountListActivity.ActualLang="por";
-                                    adb.OpenDB();
-                                    adb.UpdateLanguage(AccountInfo.idAccount,AccountListActivity.ActualLang);
-                                    tv=(TextView)findViewById(R.id.tvHeaderTransacts);
-                                    tv.setText((AccountListActivity.ActualLang.equals("por")?"Diário transações":"Journal transactions"));
-                                    Typeface face = Typeface.createFromAsset(getAssets(),
-                                            "fonts/Roboto-Thin.ttf");
-                                    tv.setTypeface(face);
-
-                                    tv=(TextView)findViewById(R.id.tvHeaderAgencies);
-                                    tv.setText((AccountListActivity.ActualLang.equals("por")?"Agências":"Les agences"));
-                                    tv.setTypeface(face);
-
-
-                                    tv=(TextView)findViewById(R.id.tvHeaderTarifs);
-                                    tv.setText((AccountListActivity.ActualLang.equals("por")?"Custos de transferência":"Coûts transferts"));
-                                    tv.setTypeface(face);
-
-
-                                    tv=(TextView)findViewById(R.id.tvHeaderParam);
-                                    tv.setText((AccountListActivity.ActualLang.equals("por")?"configurações":"Paramétrage"));
-                                    tv.setTypeface(face);
-                                    getParam();
-                                }
-                                adb.CloseDB();
-
-                            }
-                        });
-                        AlertDialog dialog=builder.create();
-                        dialog.show();
                     }
-                }catch(Exception e){
+                }else{
+                    Toast.makeText(HomeActivity.this, AccountListActivity.ActualLang.equals("fr")?"Pas de connexion internet disponible":"Nenhuma conexão com a internet disponível", Toast.LENGTH_SHORT).show();
 
                 }
+
 
             }
         });
@@ -1069,13 +1121,15 @@ public class HomeActivity extends AppCompatActivity {
             repertoire=new String[][]{
                     {"Modifier Pin", "Votre pin de securité"},
                     {"Changer Langue", "Modifier la langue de l'application"},
-                    {"Solde", "verifier votre solde"}
+                    {"Solde", "verifier votre solde"},
+                    {"Mon compte", AccountInfo.AccountNum}
             };
         }else {
             repertoire=new String[][]{
                     {"Modificar Código", "Seu pino de segurança"},
                     {"Alterar idioma", "Alterar o idioma do aplicativo"},
-                    {"Saldo bancário", "verifique seu saldo bancário"}
+                    {"Saldo bancário", "verifique seu saldo bancário"},
+                    {"Minha conta", AccountInfo.AccountNum}
             };
         }
         List<HashMap<String, String>> liste = new
